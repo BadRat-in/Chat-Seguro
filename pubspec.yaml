@@ -30,8 +30,8 @@ dependencies:
   cupertino_icons: ^1.0.2
   font_awesome_flutter: ^9.0.0
   material_design_icons_flutter: ^4.0.5955
-  flutter_gradient_colors: ^2.1.1
   http: ^0.13.3
+
 
 dev_dependencies:
   flutter_test:
