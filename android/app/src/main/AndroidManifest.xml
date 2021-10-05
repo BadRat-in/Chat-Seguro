@@ -2,7 +2,7 @@
     package="com.a3bg.secure_chat">
    <application
         android:label="Chat Seguro"
-        android:icon="@mipmap/logo">
+        android:icon="@mipmap/logo1">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
@@ -27,6 +27,7 @@
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
               android:resource="@drawable/launch_background"
               />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>

@@ -205,7 +205,7 @@ class _SignInState extends State<SignIn> {
                   height: 150,
                   width: 150,
                   decoration: BoxDecoration(),
-                  child: Image.asset("assets/login.png")),
+                  child: Image.asset("assets/logo1.png")),
               SizedBox(
                 height: 65,
               ),
@@ -303,8 +303,7 @@ class _SignInState extends State<SignIn> {
                     )),
                 GestureDetector(
                     onTap: () {
-                      Navigator.pushReplacementNamed(context, "home");
-                      // _onButtonPressed();
+                      _onButtonPressed();
                     },
                     child: Text(
                       "Sign Up",
@@ -320,6 +319,17 @@ class _SignInState extends State<SignIn> {
               )
             ],
           ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.blueGrey,
+        onPressed: () {
+          Navigator.pushNamed(context, "home");
+        },
+        child: Icon(
+          Icons.home,
+          size: 40,
+          color: Colors.white,
         ),
       ),
     );

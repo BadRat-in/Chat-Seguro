@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:secure_chat/Res/colors.dart';
 import 'package:secure_chat/Res/userList.dart';
+import 'package:share/share.dart';
 
 class Home extends StatefulWidget {
   @override
@@ -11,25 +13,70 @@ class _HomeState extends State<Home> {
     ChatUsers(
         name: "Rahul",
         message: "Hello",
-        imageUrl: "assets/user.jpg",
+        imageUrl: "assets/logo1.png",
         time: "Now"),
     ChatUsers(
         name: "Sumat Singh",
-        message:
-            "What are you Doing dfhjs fegkhsdfsdkhj  sdfljsdfsfljsdglodhj dnhfkgdighd ijoif h",
+        message: '''What are you Doing look this, 
+            "void main() {const str = 'the quick brown fox jumps over the lazy dog';
+            const start = 'quick' 
+            const end = 'over';"''',
         imageUrl: "assets/login.png",
-        time: '17 Mar'),
+        time: '2:45 PM'),
     ChatUsers(
         name: 'Shivani Patel',
-        message:
-            'Lets go fdkjgdfg dfsdkhfs sdfoijdesr   erth9iu kfhjsdfthew wejhrdosi',
-        imageUrl: 'assets/user.jpg',
-        time: 'Today')
+        message: '''final start
+        Index = str.indexOf(start);
+  final endIndex = str.indexOf(end, startIndex + start.length);
+
+  print(str.substring(startIndex + start.length, endIndex)); // brown fox jumps
+}''',
+        imageUrl: 'assets/logo1.png',
+        time: 'Yesterday'),
+    ChatUsers(
+        name: "Bad Rat",
+        message: "Good Night, Bye",
+        imageUrl: "assets/logo1.png",
+        time: "Friday")
   ];
+
+  void main() {
+    int count = 0;
+    for (ChatUsers msg in userList) {
+      userList[count].message = msg.message.replaceAll("\n", " ");
+      count++;
+    }
+
+    count = 0;
+
+    for (ChatUsers msg in userList) {
+      List<String> temp = msg.message.split(" ");
+      int count1 = 0;
+      String temp_msg = "";
+      for (String temp1 in temp) {
+        try {
+          if (temp1 != temp[count1 + 1]) {
+            temp_msg += temp1 + " ";
+            count1++;
+          }
+        } catch (e) {
+          userList[count].message = temp[0];
+          print(e);
+        }
+        if (temp.length == 1) {
+          temp_msg = temp[0];
+        }
+      }
+      userList[count].message = temp_msg;
+      count++;
+    }
+  }
+
   int _active = 1;
   TextEditingController searchUser = TextEditingController();
   bool isSearch = false;
   Widget setScreen;
+  MaterialColor backcolor = CustomColor().backColor;
 
   @override
   void initState() {
@@ -39,7 +86,6 @@ class _HomeState extends State<Home> {
       print(searchUser.text);
     });
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +157,8 @@ class _HomeState extends State<Home> {
                           _active == 1 ? FontWeight.bold : FontWeight.w500,
                       fontSize: _active == 1 ? 20 : 0),
                   duration: const Duration(milliseconds: 200))
-            ]),Row(children: [
+            ]),
+            Row(children: [
               IconButton(
                   onPressed: () {
                     setState(() {
@@ -186,13 +233,10 @@ class _HomeState extends State<Home> {
     );
   }
 
-
   Widget createSearchfield() {
     return TextField(
       cursorColor: Colors.white70,
-      style: TextStyle(
-          color: Colors.white,fontSize: 18
-      ),
+      style: TextStyle(color: Colors.white, fontSize: 18),
       decoration: InputDecoration(
           focusColor: Colors.white38,
           prefixIcon: Icon(
@@ -206,43 +250,49 @@ class _HomeState extends State<Home> {
     );
   }
 
-
   Widget _homeContrainer(context) {
+    main();
     return ListView.builder(
         itemCount: userList.length,
         shrinkWrap: true,
         padding: EdgeInsets.only(top: 10),
         physics: NeverScrollableScrollPhysics(),
         itemBuilder: (context, index) {
-          return ListTile(
-              leading: CircleAvatar(
-                backgroundImage: AssetImage(userList[index].imageUrl),
-                maxRadius: 30,
-              ),
-              title: Text(
-                userList[index].name,
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
-              subtitle: Text(
-                (userList[index].message.length <= 40)
-                    ? userList[index].message
-                    : 'message',
-                style: TextStyle(
+          return GestureDetector(
+            onTap: () {
+              print(userList[index].name);
+            },
+            child: ListTile(
+                leading: CircleAvatar(
+                  backgroundImage: AssetImage(userList[index].imageUrl),
+                  maxRadius: 30,
+                ),
+                title: Text(
+                  userList[index].name,
+                  style: TextStyle(fontSize: 18, color: Colors.white),
+                ),
+                subtitle: Text(
+                  (userList[index].message.length <= 40)
+                      ? userList[index].message
+                      : "${userList[index].message.substring(0, 40)}...",
+                  style: TextStyle(
                     color: Colors.white70,
                     fontSize: 14,
-                    fontWeight: (index == 0 || index == 3)
-                        ? FontWeight.bold
-                        : FontWeight.normal),
-              ),
-              trailing: Text(
-                userList[index].time,
-                style: TextStyle(
-                    color: Colors.white54,
-                    fontSize: 14,
-                    fontWeight: (index == 0 || index == 3)
-                        ? FontWeight.bold
-                        : FontWeight.normal),
-              ));
+                    // fontWeight: (index == 0 || index == 3)
+                    //     ? FontWeight.bold
+                    //     : FontWeight.normal
+                  ),
+                ),
+                trailing: Text(
+                  userList[index].time,
+                  style: TextStyle(
+                      color: Colors.white54,
+                      fontSize: 14,
+                      fontWeight: (index == 0 || index == 3)
+                          ? FontWeight.bold
+                          : FontWeight.normal),
+                )),
+          );
         });
   }
 
@@ -250,11 +300,270 @@ class _HomeState extends State<Home> {
     return Container();
   }
 
-  Widget _addUserContainer(context){
+  Widget _addUserContainer(context) {
     return Container();
   }
 
   Widget _settingsContrainer(context) {
-    return Container();
+    return Container(
+      padding: EdgeInsets.symmetric(vertical: 25, horizontal: 20),
+      child: Expanded(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Row(
+                children: [
+                  CircleAvatar(
+                    maxRadius: 45,
+                    backgroundImage: AssetImage("assets/login.png"),
+                  ),
+                  SizedBox(
+                    width: 25,
+                  ),
+                  Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Username",
+                          style: TextStyle(color: Colors.white, fontSize: 25),
+                        ),
+                        SizedBox(
+                          height: 6,
+                        ),
+                        Text(
+                          "About",
+                          style: TextStyle(color: Colors.white54, fontSize: 18),
+                        )
+                      ]),
+                ],
+              ),
+              IconButton(
+                  onPressed: () {
+                    _editAboutBottomSheet();
+                  },
+                  icon: Icon(
+                    Icons.edit,
+                    color: Colors.white38,
+                    size: 30,
+                  ))
+            ]),
+            SizedBox(
+              height: 25,
+            ),
+            Divider(
+              color: Colors.white12,
+            ),
+            SizedBox(
+              height: 10,
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  CircleAvatar(
+                    child: Icon(
+                      Icons.image,
+                      size: 35,
+                      color: Colors.white54,
+                    ),
+                    maxRadius: 30,
+                    backgroundColor: Colors.transparent,
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    "Change Profile Picture",
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 22,
+                    ),
+                  ),
+                ]),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  CircleAvatar(
+                    child: Icon(
+                      Icons.vpn_key,
+                      size: 35,
+                      color: Colors.white54,
+                    ),
+                    maxRadius: 30,
+                    backgroundColor: Colors.transparent,
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    "Change Password",
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 22,
+                    ),
+                  ),
+                ]),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  CircleAvatar(
+                    child: Icon(
+                      Icons.phone,
+                      size: 35,
+                      color: Colors.white54,
+                    ),
+                    maxRadius: 30,
+                    backgroundColor: Colors.transparent,
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    "Change Number",
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 22,
+                    ),
+                  ),
+                ]),
+              ),
+            ),
+            GestureDetector(
+              onTap: () {},
+              child: Container(
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  CircleAvatar(
+                    child: Icon(
+                      Icons.delete_forever,
+                      size: 35,
+                      color: Colors.white54,
+                    ),
+                    maxRadius: 30,
+                    backgroundColor: Colors.transparent,
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    "Delete Account",
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 22,
+                    ),
+                  ),
+                ]),
+              ),
+            ),
+            Divider(
+              color: Colors.white12,
+            ),
+            GestureDetector(
+              onTap: () {
+                Share.share("https://www.instagram.com/bad___rat/");
+              },
+              child: Container(
+                child:
+                    Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+                  CircleAvatar(
+                    child: Icon(
+                      Icons.share,
+                      size: 35,
+                      color: Colors.white54,
+                    ),
+                    maxRadius: 30,
+                    backgroundColor: Colors.transparent,
+                  ),
+                  SizedBox(
+                    width: 8,
+                  ),
+                  Text(
+                    "Share with friends",
+                    style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 22,
+                    ),
+                  ),
+                ]),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _editAboutBottomSheet() {
+    showModalBottomSheet(
+        isScrollControlled: true,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(top: Radius.circular(20))),
+        context: context,
+        builder: (context) {
+          return SafeArea(
+            child: Container(
+              height: 300,
+              padding: EdgeInsets.symmetric(horizontal: 25),
+              color: backcolor,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "      ",
+                    style: TextStyle(fontSize: 55),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(
+                      hintText: "About",
+                      enabledBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white54)),
+                      focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(color: Colors.white54)),
+                      hintStyle: TextStyle(color: Colors.white54),
+                      prefixIcon: Icon(
+                        Icons.person_outline,
+                        color: Colors.white70,
+                      ),
+                    ),
+                    style: TextStyle(color: Color(0xfffafafa)),
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  GestureDetector(
+                    onTap: () {},
+                    child: Container(
+                      padding: EdgeInsets.symmetric(vertical: 20),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          color: Color.fromRGBO(38, 55, 89, 1)),
+                      alignment: Alignment.center,
+                      child: Text(
+                        "Save Change",
+                        style: TextStyle(
+                          fontSize: 24,
+                          color: Color(0xffffffff),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 50,
+                  )
+                ],
+              ),
+            ),
+          );
+        });
   }
 }
